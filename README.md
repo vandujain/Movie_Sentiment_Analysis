@@ -1,87 +1,163 @@
-# 🎬 Movie Review Sentiment Analysis
+🎬 Movie Sentiment Analysis
 
-This project uses machine learning and NLP techniques to perform sentiment analysis on movie reviews. It classifies reviews as either **positive** or **negative**, providing valuable insights for filmmakers, studios, and content platforms.
+Sentiment Classification on IMDB Movie Reviews using NLP + Machine Learning
 
----
 
-## 📌 Project Objectives
 
-- Automatically classify movie reviews based on sentiment (positive or negative).
-- Use machine learning models to analyze text data and derive patterns.
-- Evaluate and compare the performance of various models to determine the best performer.
 
----
 
-## 🧠 Technologies Used
 
-- **Python**
-- **Scikit-learn**
-- **NLTK (Natural Language Toolkit)**
-- **XGBoost**
-- **Matplotlib & Seaborn** for visualizations
 
----
 
-## 📂 Dataset
+📌 Overview
 
-- **Source**: IMDb
-- **Size**: 50,000 movie reviews (balanced: 25k positive, 25k negative)
-- **Format**: CSV with `review` and `sentiment` columns
-- **After cleaning**: 49,582 unique entries
+This project performs sentiment analysis on 50,000 IMDB movie reviews using traditional NLP techniques and machine learning models.
+I implemented text preprocessing, TF-IDF vectorization, and multiple classification models, comparing performance across algorithms.
 
----
+📂 Dataset
 
-## 🧹 Data Preprocessing
+Source: IMDB Movie Review Dataset
 
-1. Remove HTML tags using `BeautifulSoup`
-2. Expand contractions (e.g., "can't" → "cannot")
-3. Remove emojis and punctuation
-4. Tokenize text
-5. Remove stopwords and lemmatize words
-6. Encode labels: `"positive"` → `1`, `"negative"` → `0`
+Total Reviews: 50,000
 
----
+Sentiments: Balanced (25k positive, 25k negative)
 
-## 📊 Exploratory Data Analysis (EDA)
+Columns:
 
-- Word Clouds for positive & negative reviews
-- Distribution plots:
-  - Review length (characters & words)
-  - Average word length per review
-- Most common words:
-  - Unigram
-  - Bigram
-  - Trigram
+review (text)
 
----
+sentiment (positive/negative → encoded as 1/0)
 
-## 🧪 Model Training & Evaluation
+🧠 Project Workflow
+1. Loading Dataset  
+2. Exploratory Data Analysis (EDA)
+3. Text Preprocessing
+4. Feature Engineering (TF-IDF)
+5. Train-Test Split
+6. Model Training
+7. Model Evaluation
+8. Results & Comparison
 
-| Model                          | Accuracy |
-|--------------------------------|----------|
-| Logistic Regression            | 89.99%   |
-| Multinomial Naive Bayes        | 86.35%   |
-| Linear Support Vector Classifier (SVC) | **90.68%** |
-| XGBoost                       | 86.42%   |
+🔍 Exploratory Data Analysis
 
-✅ **Best Performance**: `LinearSVC` with ~90.68% accuracy
+Sentiment distribution
 
----
+Review length statistics
 
-## 📈 Evaluation Metrics
+Word count histograms
 
-- **Accuracy**
-- **Confusion Matrix**
+Boxplots by sentiment
 
----
+Longest & shortest reviews
 
-## 📦 Requirements
+WordCloud of raw text
 
-```bash
-pip install numpy pandas seaborn matplotlib nltk scikit-learn xgboost beautifulsoup4 wordcloud
+Binning review lengths (Short → Extreme)
 
-import nltk
-nltk.download('stopwords')
-nltk.download('punkt')
-nltk.download('wordnet')
-nltk.download('omw-1.4')
+🧹 Text Preprocessing Pipeline
+
+✔ Expand contractions
+✔ Lowercasing
+✔ Remove HTML tags
+✔ Remove URLs
+✔ Remove emojis
+✔ Remove punctuation
+✔ Tokenization
+✔ Remove stopwords (keep negations)
+✔ POS-based lemmatization
+✔ Join tokens back
+✔ Encode labels
+
+Sample Preprocessing Code
+contractions.fix("can't")  # cannot
+
+html_tags = re.compile(r'<.*?>')
+clean_text = html_tags.sub(" ", text)
+
+tokens = word_tokenize(clean_text.lower())
+filtered_tokens = [w for w in tokens if w not in stop_words]
+
+lemmatizer.lemmatize(w, pos='v')
+
+🧪 Feature Extraction — TF-IDF
+tfidf = TfidfVectorizer()
+X_tfidf = tfidf.fit_transform(data['lemmatized'])
+
+🔀 Train-Test Split
+X_train, X_test, y_train, y_test = train_test_split(
+    X_tfidf, y, test_size=0.2, random_state=42
+)
+
+🤖 Models Trained
+Model	Description
+Logistic Regression	Baseline linear classifier
+Naive Bayes	Probabilistic text model
+Linear SVM	High-margin classifier
+XGBoost	Gradient boosting ensemble
+📊 Model Performance
+Accuracy Scores
+Model	Accuracy
+Logistic Regression	⭐ 0.8946
+Linear SVM	⭐ 0.8945
+XGBoost	0.8635
+Naive Bayes	0.8617
+🔥 Best Models
+
+Logistic Regression
+
+Linear SVM
+
+Both achieve ~89.4% accuracy.
+
+📈 Visualizations
+
+Included in the notebook:
+
+📊 Sentiment count plot
+
+🔠 Word/character count distribution
+
+📦 Boxplots
+
+☁️ WordClouds
+
+🔡 Top frequent words (before/after cleaning)
+
+🧮 Confusion matrices
+
+📉 Accuracy comparison barplot
+
+🧾 Conclusions
+
+Traditional ML + TF-IDF is highly effective for sentiment tasks.
+
+Proper text preprocessing massively improves model quality.
+
+Logistic Regression & Linear SVM perform best, matching literature benchmarks.
+
+🚀 Future Improvements
+
+Fine-tuning BERT / DistilBERT
+
+LSTM/GRU-based models
+
+Hyperparameter tuning
+
+Deploying model using Streamlit / FastAPI
+
+LIME/SHAP interpretability
+
+📁 Project Structure
+📦 Movie-Sentiment-Analysis
+├── 📄 IMDB Dataset.csv
+├── 📓 MOVIE_SENTIMENT_ANALYSIS.ipynb
+├── 📝 README.md
+└── 📊 results/
+     ├── confusion_matrices/
+     ├── wordcloud.png
+     └── accuracy_plot.png
+
+✨ Author
+
+Vandana Jain
+MSc Data Science | NLP & Machine Learning Enthusiast
